@@ -148,7 +148,7 @@ class SCLAlertViewPropertiesTests: XCTestCase {
     
     func testSCLAlertViewDurationTimer() {
         if let timer = alert.durationTimer {
-            XCTAssertTrue(timer.isKindOfClass(NSTimer.self))
+            XCTAssertTrue(timer.isKindOfClass(Timer.self))
         }else {
             XCTAssertTrue(alert.durationTimer == nil)
         }
