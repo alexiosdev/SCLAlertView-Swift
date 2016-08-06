@@ -24,11 +24,11 @@ class SCLTextFieldTests: XCTestCase {
 
     func testTextFieldFormat() {
         let textfield = alert.addTextField("testTextField")
-        XCTAssertTrue(textfield.isKindOfClass(UITextField.self))
-        XCTAssertTrue(textfield.borderStyle == UITextBorderStyle.RoundedRect)
+        XCTAssertTrue(textfield.isKind(of: UITextField.self))
+        XCTAssertTrue(textfield.borderStyle == .roundedRect)
         XCTAssertTrue(textfield.font == UIFont(name: "HelveticaNeue", size: 14))
-        XCTAssertTrue(textfield.autocapitalizationType == UITextAutocapitalizationType.Words)
-        XCTAssertTrue(textfield.clearButtonMode == UITextFieldViewMode.WhileEditing)
+        XCTAssertTrue(textfield.autocapitalizationType == .words)
+        XCTAssertTrue(textfield.clearButtonMode == .whileEditing)
         XCTAssertTrue(textfield.layer.masksToBounds == true)
         XCTAssertTrue(textfield.layer.borderWidth == 1.0)
         XCTAssertTrue(textfield.placeholder == "testTextField")
