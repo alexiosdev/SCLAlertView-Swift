@@ -23,7 +23,7 @@ class SCLAlertViewInitTests: XCTestCase {
     }
 
     func testViewFrame() {
-        XCTAssertTrue(alert.view.frame == UIScreen.main().bounds)
+        XCTAssertTrue(alert.view.frame == UIScreen.main.bounds)
     }
     
     func testViewResizingMask() {

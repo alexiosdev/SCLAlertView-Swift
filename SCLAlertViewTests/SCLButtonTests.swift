@@ -57,7 +57,7 @@ class SCLButtonTests: XCTestCase {
     func testButtonTargets() {
         let alert = SCLAlertView()
         alert.addButton("testButtonTitle") {}
-        let buttonTargets = alert.buttons[0].allTargets().first
+        let buttonTargets = alert.buttons[0].allTargets.first
         let button = alert.buttons[0]
         
         let actionsTouchUpInside = button.actions(forTarget: buttonTargets, forControlEvent: .touchUpInside)

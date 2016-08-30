@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         
         // Add textfield 1
         let textfield1 = UITextField(frame: CGRect(x: x,y: 10,width: 180,height: 25))
-        textfield1.layer.borderColor = UIColor.green().cgColor
+        textfield1.layer.borderColor = UIColor.green.cgColor
         textfield1.layer.borderWidth = 1.5
         textfield1.layer.cornerRadius = 5
         textfield1.placeholder = "Username"
@@ -97,10 +97,10 @@ class ViewController: UIViewController {
         // Add textfield 2
         let textfield2 = UITextField(frame: CGRect(x: x,y: textfield1.frame.maxY + 10,width: 180,height: 25))
         textfield2.isSecureTextEntry = true
-        textfield2.layer.borderColor = UIColor.blue().cgColor
+        textfield2.layer.borderColor = UIColor.blue.cgColor
         textfield2.layer.borderWidth = 1.5
         textfield2.layer.cornerRadius = 5
-        textfield1.layer.borderColor = UIColor.blue().cgColor
+        textfield1.layer.borderColor = UIColor.blue.cgColor
         textfield2.placeholder = "Password"
         textfield2.textAlignment = NSTextAlignment.center
         subview.addSubview(textfield2)
@@ -112,7 +112,7 @@ class ViewController: UIViewController {
         }
         
         // Add Button with Duration Status and custom Colors
-        alert.addButton("Duration Button", backgroundColor: .brown(), textColor: .yellow(), showDurationStatus: true) {
+        alert.addButton("Duration Button", backgroundColor: .brown, textColor: .yellow, showDurationStatus: true) {
             print("Duration Button tapped")
         }
 
@@ -128,7 +128,7 @@ class ViewController: UIViewController {
         }
         
         let icon = UIImage(named:"custom_icon.png")
-        let color = UIColor.orange()
+        let color = UIColor.orange
         
         alert.showCustom("Custom Color", subTitle: "Custom color", color: color, icon: icon!)
     }

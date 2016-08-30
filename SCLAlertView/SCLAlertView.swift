@@ -15,19 +15,19 @@ public enum SCLAlertViewStyle {
     
     var defaultColorInt: UInt {
         switch self {
-        case success:
+        case .success:
             return 0x22B573
-        case error:
+        case .error:
             return 0xC1272D
-        case notice:
+        case .notice:
             return 0x727375
-        case warning:
+        case .warning:
             return 0xFFD110
-        case info:
+        case .info:
             return 0x2866BF
-        case edit:
+        case .edit:
             return 0xA429FF
-        case wait:
+        case .wait:
             return 0xD62DA5
         }
         
@@ -230,7 +230,7 @@ public class SCLAlertView: UIViewController {
     
     private func setup() {
         // Set up main view
-        view.frame = UIScreen.main().bounds
+        view.frame = UIScreen.main.bounds
         view.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
         view.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:appearance.kDefaultShadowOpacity)
         view.addSubview(baseView)
@@ -244,7 +244,7 @@ public class SCLAlertView: UIViewController {
         contentView.addSubview(labelTitle)
         contentView.addSubview(viewText)
         // Circle View
-        circleBG.backgroundColor = UIColor.white()
+        circleBG.backgroundColor = UIColor.white
         circleBG.layer.cornerRadius = circleBG.frame.size.height / 2
         baseView.addSubview(circleBG)
         circleBG.addSubview(circleView)
@@ -259,7 +259,7 @@ public class SCLAlertView: UIViewController {
         // View text
         viewText.isEditable = false
         viewText.textAlignment = .center
-        viewText.textContainerInset = UIEdgeInsetsZero
+        viewText.textContainerInset = .zero
         viewText.textContainer.lineFragmentPadding = 0;
         viewText.font = appearance.kTextFont
         // Colours
@@ -276,7 +276,7 @@ public class SCLAlertView: UIViewController {
     
     override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        let rv = UIApplication.shared().keyWindow! as UIWindow
+        let rv = UIApplication.shared.keyWindow! as UIWindow
         let sz = rv.frame.size
         
         // Set background frame
@@ -356,14 +356,13 @@ public class SCLAlertView: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(SCLAlertView.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
     }
     
-    override public func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillShow)
-        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillHide)
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override public func touchesEnded(_ touches:Set<UITouch>, with event:UIEvent?) {
-        if event?.touches(for: view)?.count > 0 {
+        if (event?.touches(for: view)?.count ?? 0) > 0 {
             view.endEditing(true)
         }
     }
@@ -406,9 +405,9 @@ public class SCLAlertView: UIViewController {
     }
     
     @discardableResult
-    public func addButton(_ title:String, backgroundColor:UIColor? = nil, textColor:UIColor? = nil, showDurationStatus:Bool=false, action:()->Void)->SCLButton {
+    public func addButton(_ title:String, backgroundColor:UIColor? = nil, textColor:UIColor? = nil, showDurationStatus:Bool=false, action:@escaping ()->Void)->SCLButton {
         let btn = addButton(title, backgroundColor: backgroundColor, textColor: textColor, showDurationStatus: showDurationStatus)
-        btn.actionType = SCLActionType.closure
+        btn.actionType = .closure
         btn.action = action
         btn.addTarget(self, action:#selector(SCLAlertView.buttonTapped(_:)), for:.touchUpInside)
         btn.addTarget(self, action:#selector(SCLAlertView.buttonTapDown(_:)), for:[.touchDown, .touchDragEnter])
@@ -483,7 +482,7 @@ public class SCLAlertView: UIViewController {
         keyboardHasBeenShown = true
         
         guard let userInfo = (notification as NSNotification).userInfo else {return}
-        guard let endKeyBoardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.minY else {return}
+        guard let endKeyBoardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.minY else {return}
         
         if tmpContentViewFrameOrigin == nil {
         tmpContentViewFrameOrigin = self.contentView.frame.origin
@@ -595,10 +594,10 @@ public class SCLAlertView: UIViewController {
     
     // showTitle(view, title, subTitle, duration, style)
     @discardableResult
-    public func showTitle(_ title: String, subTitle: String, duration: TimeInterval?, completeText: String?, style: SCLAlertViewStyle, colorStyle: UInt?=0x000000, colorTextButton: UInt?=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .topToBottom) -> SCLAlertViewResponder {
+    public func showTitle(_ title: String, subTitle: String, duration: TimeInterval, completeText: String?, style: SCLAlertViewStyle, colorStyle: UInt?=0x000000, colorTextButton: UInt?=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .topToBottom) -> SCLAlertViewResponder {
         selfReference = self
         view.alpha = 0
-        let rv = UIApplication.shared().keyWindow! as UIWindow
+        let rv = UIApplication.shared.keyWindow! as UIWindow
         rv.addSubview(view)
         view.frame = rv.bounds
         baseView.frame = rv.bounds
@@ -715,7 +714,7 @@ public class SCLAlertView: UIViewController {
         }
         
         // Adding duration
-        if duration > 0 {
+        if duration > TimeInterval(0) {
             self.duration = duration
             durationTimer?.invalidate()
             durationTimer = Timer.scheduledTimer(timeInterval: self.duration, target: self, selector: #selector(SCLAlertView.hideView), userInfo: nil, repeats: false)
@@ -733,7 +732,7 @@ public class SCLAlertView: UIViewController {
     // Show animation in the alert view
     private func showAnimation(_ animationStyle: SCLAnimationStyle = .topToBottom, animationStartOffset: CGFloat = -400.0, boundingAnimationOffset: CGFloat = 15.0, animationDuration: TimeInterval = 0.2) {
         
-        let rv = UIApplication.shared().keyWindow! as UIWindow
+        let rv = UIApplication.shared.keyWindow! as UIWindow
         var animationStartOrigin = self.baseView.frame.origin
         var animationCenter : CGPoint = rv.center
         
@@ -873,7 +872,7 @@ class SCLAlertViewStyleKit : NSObject {
         checkmarkShapePath.close()
         checkmarkShapePath.miterLimit = 4;
         
-        UIColor.white().setFill()
+        UIColor.white.setFill()
         checkmarkShapePath.fill()
     }
     
@@ -886,7 +885,7 @@ class SCLAlertViewStyleKit : NSObject {
         crossShapePath.addLine(to: CGPoint(x: 70, y: 70))
         crossShapePath.lineCapStyle = CGLineCap.round;
         crossShapePath.lineJoinStyle = CGLineJoin.round;
-        UIColor.white().setStroke()
+        UIColor.white.setStroke()
         crossShapePath.lineWidth = 14
         crossShapePath.stroke()
     }
@@ -924,7 +923,7 @@ class SCLAlertViewStyleKit : NSObject {
         noticeShapePath.close()
         noticeShapePath.miterLimit = 4;
         
-        UIColor.white().setFill()
+        UIColor.white.setFill()
         noticeShapePath.fill()
     }
     
